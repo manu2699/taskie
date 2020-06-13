@@ -7,18 +7,29 @@ const SimpleCrypto = require("simple-crypto-js").default;
 let simpleCrypto = new SimpleCrypto(process.env.KEY)
 const secret = process.env.SECRET;
 
-let db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "root",
-  database: "taskie"
+let db = mysql.createPool({
+  host: process.env.HOST,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DB
 });
 
-db.connect((err) => {
-  if (err)
-    throw err;
-  console.log("Connected!");
-});
+app.get("/userSetup", (req, res) => {
+  //query to create user table.
+  db.query(`create table users
+            ( 
+              id int(6) unsigned auto_increment primary key, 
+              email varchar(50) not null, 
+              name varchar(50) not null, 
+              password varchar(300) not null, 
+              unique(email)
+            );`,
+    (err, result) => {
+      if (err)
+        res.send(err)
+      res.send(result)
+    })
+})
 
 
 app.post("/verify", (req, res) => {
@@ -38,12 +49,13 @@ app.post('/login', (req, res) => {
       const payload = {
         id: result[0].id,
         email: result[0].email,
+        name: result[0].name,
       };
       // Generating Token for the user.
       let token = jwt.sign(payload, secret);
-      res.send(token);
+      res.send({ token });
     } else {
-      res.send("wrong password")
+      res.send({ message: "Wrong password" })
     }
   })
 })

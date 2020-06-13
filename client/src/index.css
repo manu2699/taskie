@@ -55,6 +55,46 @@ body {
 #open {
 }
 
+.float {
+	position: fixed;
+	width: 60px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 60px;
+	border-radius: 50%;
+	bottom: 40px;
+	right: 40px;
+	background-image: linear-gradient(to right, #00f7ff, #1aff1a);
+	color: #fff;
+	text-align: center;
+	box-shadow: 2px 2px 3px #999;
+	cursor: pointer;
+}
+#userSettings {
+	right: 110px;
+}
+
+#AddTask-Overlay {
+	position: fixed;
+	display: none;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(1, 53, 16, 0.808);
+	z-index: 2;
+	cursor: pointer;
+}
+.Content {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+}
+
 .blueCard {
 	background-color: #07575a;
 	padding: 15px 25px;
@@ -67,7 +107,8 @@ body {
 	transition: 250ms ease-out;
 }
 
-#loginForm {
+#loginForm,
+#Form {
 	width: 60%;
 }
 
@@ -99,6 +140,7 @@ body {
 
 button > div {
 	display: flex;
+	color: #fff;
 	justify-content: space-between;
 	align-items: center;
 	padding: 0% 20px;
@@ -130,7 +172,7 @@ button {
 	font-family: inherit;
 	color: #ffffff;
 	outline: none;
-	width: 30%;
+	width: 50%;
 	margin: 1vh;
 }
 
@@ -190,7 +232,8 @@ h4 > span {
 	button {
 		width: 70%;
 	}
-	#loginForm {
+	#loginForm,
+	#Form {
 		width: 80%;
 	}
 }

@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { useEffect, useState, useContext } from 'react';
+import axios from "axios";
 import { FiUserPlus, FiUserCheck } from "react-icons/fi";
+import { AuthContext } from "../context/AuthContext";
 
-const Login = () => {
+const Login = (props) => {
+  let { afterAuth } = useContext(AuthContext);
   let [createNew, setCreateNew] = useState(false); //to indicate signup
   //basic credentials
+  let [name, setName] = useState("");
   let [email, setEmail] = useState("");
   let [pass, setPass] = useState("");
   let [confirmPass, setConfirmPass] = useState("");
@@ -39,11 +42,27 @@ const Login = () => {
   };
 
   let signUp = () => {
+    axios.post("/signup", { email, password: pass, name }).then(resp => {
+      if (resp.data.code) {
+        console.log("Some error occured,")
+      } else if (resp.data.insertId) {
+        console.log("success")
+        signIn();
+      }
+    }).catch(err => { })
 
   }
 
   let signIn = () => {
-
+    axios.post("/login", { email, password: pass }).then(resp => {
+      if (resp.data.message) {
+        console.log(resp.data.message)
+      } else if (resp.data.token) {
+        console.log(resp.data.token)
+        afterAuth(resp.data.token);
+        props.history.push("/");
+      }
+    }).catch(err => { })
   }
 
   useEffect(() => {
@@ -62,7 +81,7 @@ const Login = () => {
         setOk(false)
       }
     } else {
-      if (vEmail && vPass && samepass && createNew) {
+      if (vEmail && vPass && samepass && createNew && name.length >= 2) {
         document.getElementById("reg").className = "enabled";
         setOk(true)
       } else {
@@ -86,13 +105,20 @@ const Login = () => {
               </center>
             </div>
           </div>
+          {createNew ? (
+            <div>
+              <h4>Name <span>- Your Sweet Name</span></h4>
+              <input type="text" onChange={e => setName(e.target.value)} />
+            </div>
+          ) :
+            (<span></span>)}
           <h4>Email <span>- Provide a Valid Email</span></h4>
           <input type="text" onChange={e => setEmail(e.target.value)} />
           <h4>Password <span>- Minimum of 8 Characters</span></h4>
           <input type="text" onChange={e => setPass(e.target.value)} />
           {createNew ? (
             <div>
-              <h4>Confirm Password  <span> - Passwords must matching</span></h4>
+              <h4>Confirm Password  <span> - Passwords must be matching</span></h4>
               <input type="text" onChange={e => setConfirmPass(e.target.value)} />
             </div>
           ) :
