@@ -9,9 +9,10 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.underline {
+.underline,
+.heading {
 	margin: 10px;
-	font-size: 25px;
+	font-size: 18px;
 	font-weight: 700;
 	color: #000;
 	background-image: linear-gradient(to right, #00f7ff, #1aff1a);
@@ -23,8 +24,9 @@ body {
 	transition: 250ms ease-out;
 }
 
-.underline:hover {
-	padding: 5px;
+.underline:hover,
+.heading {
+	padding: 7px;
 	border-radius: 20px;
 	background-position-y: 0px;
 	background-position-x: 0px;
@@ -32,7 +34,9 @@ body {
 	height: max-content;
 	cursor: pointer;
 }
-
+.heading {
+	font-size: 20px;
+}
 .icon {
 	font-size: 30px;
 	color: #fff;

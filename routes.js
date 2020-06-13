@@ -3,6 +3,7 @@ const app = express.Router();
 
 const mysql = require('mysql');
 const jwt = require("jsonwebtoken");
+const DateString = require("./date");
 const SimpleCrypto = require("simple-crypto-js").default;
 let simpleCrypto = new SimpleCrypto(process.env.KEY)
 const secret = process.env.SECRET;
@@ -22,27 +23,8 @@ app.post("/query", (req, res) => {
   })
 })
 
-app.get("/userSetup", (req, res) => {
-  //query to create user table.
-  db.query(`create table users
-            ( 
-              id int(6) unsigned auto_increment primary key, 
-              email varchar(50) not null, 
-              name varchar(50) not null, 
-              password varchar(300) not null, 
-              unique(email)
-            );`,
-    (err, result) => {
-      if (err)
-        res.send(err)
-      res.send(result)
-    })
-})
-
-
 app.post("/verify", (req, res) => {
   jwt.verify(req.body.token, secret, (err, decoded) => {
-    console.log(decoded)
     res.send(decoded)
   });
 })
@@ -50,7 +32,7 @@ app.post("/verify", (req, res) => {
 app.post('/login', (req, res) => {
   db.query(`Select * from users where email = "${req.body.email}"`, (err, result) => {
     if (err)
-      res.send(err);
+      return res.send(err);
     //decrypting user password.
     var plainpass = simpleCrypto.decrypt(result[0].password);
     if (plainpass === req.body.password) {
@@ -76,8 +58,35 @@ app.post('/signup', (req, res) => {
   password = chipherpass;
   db.query(`Insert into users (email, name, password) values("${email}", "${uname}", "${password}")`, (err, result) => {
     if (err)
-      res.send(err);
+      return res.send(err);
     res.send(result)
+  })
+})
+
+app.get("/verifyAssignee/:email", (req, res) => {
+  db.query(`select email from users where email = "${req.params.email}"`, (err, result) => {
+    if (err)
+      return res.send({ message: "assignee not found :(" })
+    res.send({ status: "assignee found !" })
+  })
+})
+
+app.post("/postTask", (req, res) => {
+  let { taskName, fromEmail, assignTo, taskComment, taskDesc } = req.body;
+  db.query(`Insert into tasks (name, taskfrom, taskto, taskdesc, comment, dateAssigned, status)
+    values("${taskName}", "${fromEmail}", "${assignTo}", "${taskDesc}", "${taskComment}", "${DateString}", "open");`,
+    (err, result) => {
+      if (err)
+        return res.send(err)
+      return res.send(result)
+    })
+})
+
+app.get("/toTasks/:email", (req, res) => {
+  db.query(`Select * from tasks where taskfrom = "${req.params.email}" order by dateAssigned desc`, (err, result) => {
+    if (err)
+      return res.send(err)
+    return res.send(result)
   })
 })
 

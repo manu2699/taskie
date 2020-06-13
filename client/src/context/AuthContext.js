@@ -13,7 +13,7 @@ const AuthContextProvider = props => {
   useEffect(() => { console.log(details) }, [details])
 
   const verify = data => {
-    axios.post("/verify", { token: data }).then(resp => {
+    axios.post("/api/verify", { token: data }).then(resp => {
       if (resp.data.email) {
         setDetails({ email: resp.data.email, name: resp.data.name, id: resp.data.id })
       }

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from "axios";
 import { FiUserPlus, FiUserCheck } from "react-icons/fi";
 import { AuthContext } from "../context/AuthContext";
-import { Redirect } from "react-router-dom";
+
 
 const Login = (props) => {
   let { afterAuth } = useContext(AuthContext);
@@ -43,7 +43,7 @@ const Login = (props) => {
   };
 
   let signUp = () => {
-    axios.post("/signup", { email, password: pass, name }).then(resp => {
+    axios.post("/api/signup", { email, password: pass, name }).then(resp => {
       if (resp.data.code) {
         console.log("Some error occured,")
       } else if (resp.data.insertId) {
@@ -54,13 +54,13 @@ const Login = (props) => {
   }
 
   let signIn = () => {
-    axios.post("/login", { email, password: pass }).then(resp => {
+    axios.post("/api/login", { email, password: pass }).then(resp => {
       if (resp.data.message) {
         console.log(resp.data.message)
       } else if (resp.data.token) {
         console.log(resp.data.token)
         afterAuth(resp.data.token);
-        return (<Redirect to="/" />)
+        props.history.push("/")
       }
     }).catch(err => { })
   }
