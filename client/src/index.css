@@ -1,0 +1,196 @@
+@import url("https://fonts.googleapis.com/css2?family=Sriracha&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Balsamiq+Sans&family=Sriracha&display=swap");
+
+body {
+	margin: 0;
+	/* font-family: "Sriracha", cursive; */
+	font-family: "Balsamiq Sans", cursive;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.underline {
+	margin: 10px;
+	font-size: 25px;
+	font-weight: 700;
+	color: #000;
+	background-image: linear-gradient(to right, #00f7ff, #1aff1a);
+	background-position-y: 19px;
+	background-position-x: -7px;
+	background-repeat: no-repeat;
+	width: max-content;
+	height: 20px;
+	transition: 250ms ease-out;
+}
+
+.underline:hover {
+	padding: 5px;
+	border-radius: 20px;
+	background-position-y: 0px;
+	background-position-x: 0px;
+	width: max-content;
+	height: max-content;
+	cursor: pointer;
+}
+
+.icon {
+	font-size: 30px;
+	color: #fff;
+}
+
+.row {
+	display: flex;
+	padding-top: 3vh;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+.col {
+	height: 80vh;
+	width: 23%;
+	margin: 20px;
+	border-radius: 10px;
+	border: 5px solid black;
+}
+#open {
+}
+
+.blueCard {
+	background-color: #07575a;
+	padding: 15px 25px;
+	padding-top: 0px;
+	width: max-content;
+	height: max-content;
+	color: #769091;
+	text-align: left;
+	/* width: 35vw; */
+	transition: 250ms ease-out;
+}
+
+#loginForm {
+	width: 60%;
+}
+
+.fl-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.fl {
+	float: right;
+	position: relative;
+	background-color: #ffffff;
+	height: 70px;
+	width: 70px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	padding: 0px;
+	margin: 0px;
+	margin-right: -65px;
+}
+
+.fl-ico {
+	font-size: 30px;
+	color: #07575a;
+}
+
+button > div {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0% 20px;
+}
+
+.blueCard > .fl-row > h3 {
+	border-style: none none none solid;
+	border-left-width: 5px;
+	padding: 7px 10px;
+	font-size: 1.5em;
+	margin-left: -23px;
+	color: #f4f9f4;
+	text-align: center;
+}
+h4 {
+	color: #f4f9f4;
+}
+
+input[type="text"]:focus {
+	border-style: none none solid none;
+	border-bottom-width: 5px;
+	border-bottom-color: white;
+}
+
+button {
+	background: transparent;
+	border: solid #27496d;
+	border-color: inherit;
+	font-family: inherit;
+	color: #ffffff;
+	outline: none;
+	width: 30%;
+	margin: 1vh;
+}
+
+button:hover {
+	cursor: pointer;
+}
+
+input[type="text"] {
+	background: transparent;
+	color: #fff;
+	font-size: 20px;
+	height: 3vh;
+	font-family: inherit;
+	outline: none !important;
+	border-style: none none solid none;
+	border-bottom-width: 1px;
+	border-bottom-color: white;
+	width: 100%;
+}
+
+.disabled {
+	opacity: 0.5;
+}
+.disabled:hover {
+	cursor: default;
+}
+.enabled {
+	opacity: 1;
+}
+.enabled:hover {
+	cursor: pointer;
+}
+h4 > span {
+	color: #688485;
+}
+
+@media (max-width: 840px) {
+	.icon {
+		font-size: 25px;
+	}
+
+	.blueCard {
+		width: 95%;
+	}
+	.fl {
+		margin-right: -50px;
+	}
+	h2 {
+		font-size: 15px;
+	}
+	button > div {
+		padding: 0 0;
+	}
+	.row > .blueCard {
+		width: 80%;
+	}
+	button {
+		width: 70%;
+	}
+	#loginForm {
+		width: 80%;
+	}
+}

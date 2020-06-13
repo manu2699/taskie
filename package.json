@@ -1,0 +1,19 @@
+{
+	"name": "taskiee",
+	"version": "1.0.0",
+	"description": "A task management app.",
+	"main": "server.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Maneesh K",
+	"license": "ISC",
+	"dependencies": {
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"jsonwebtoken": "^8.5.1",
+		"mysql": "^2.18.1",
+		"nodemailer": "^6.4.8",
+		"simple-crypto-js": "^3.0.0"
+	}
+}
