@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from "axios";
 import { FiUserPlus, FiUserCheck } from "react-icons/fi";
 import { AuthContext } from "../context/AuthContext";
+import { Redirect } from "react-router-dom";
 
 const Login = (props) => {
   let { afterAuth } = useContext(AuthContext);
@@ -50,7 +51,6 @@ const Login = (props) => {
         signIn();
       }
     }).catch(err => { })
-
   }
 
   let signIn = () => {
@@ -60,7 +60,7 @@ const Login = (props) => {
       } else if (resp.data.token) {
         console.log(resp.data.token)
         afterAuth(resp.data.token);
-        props.history.push("/");
+        return (<Redirect to="/" />)
       }
     }).catch(err => { })
   }

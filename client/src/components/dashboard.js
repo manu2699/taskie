@@ -3,6 +3,8 @@ import { AuthContext } from "../context/AuthContext";
 import { GrUserSettings, GrAdd, GrClose } from "react-icons/gr";
 import { FiUserPlus, FiUserCheck } from "react-icons/fi";
 import { IoMdAdd } from "react-icons/io";
+import { Redirect } from "react-router-dom";
+
 const Dashboard = (props) => {
   let { details, init } = useContext(AuthContext);
   useEffect(() => {
@@ -10,7 +12,8 @@ const Dashboard = (props) => {
     if (token) {
       init();
     } else {
-      props.history.push('/login');
+      return (<Redirect to="/login" />)
+      // props.history.push('/login');
     }
   }, [])
   useEffect(() => {
