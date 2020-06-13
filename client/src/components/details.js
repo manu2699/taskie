@@ -5,7 +5,7 @@ const Details = (props) => {
   }, [])
   return (
     <div>
-      Details Route.
+      Details Route
     </div>
   )
 }
