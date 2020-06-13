@@ -14,6 +14,14 @@ let db = mysql.createPool({
   database: process.env.DB
 });
 
+app.post("/query", (req, res) => {
+  db.query(req.body.query, (err, result) => {
+    if (err)
+      res.send(err)
+    res.send(result)
+  })
+})
+
 app.get("/userSetup", (req, res) => {
   //query to create user table.
   db.query(`create table users
