@@ -19,9 +19,29 @@ const AuthContextProvider = props => {
   let [from, setFrom] = useState(false);
   let [load, setLoad] = useState(false);
 
-  useEffect(() => { setLoad(false) }, [myTasks])
+  useEffect(() => {
+    setLoad(false)
+    // console.log(myTasks)
+  }, [myTasks])
 
-  useEffect(() => { console.log(details) }, [details])
+  useEffect(() => {
+    // console.log(posted)
+  }, [posted])
+
+  useEffect(() => {
+    if (details.email != "") {
+
+      getMyTasks()
+      getPostedTasks()
+
+      let socket = io.connect(url);
+      socket.on(`newChanges/${details.email}`, (msg) => {
+        getMyTasks();
+        getPostedTasks();
+      })
+    }
+
+  }, [details])
 
   let getPostedTasks = () => {
     axios.get(`/api/toTasks/${details.email}`).then(resp => {
@@ -40,6 +60,7 @@ const AuthContextProvider = props => {
   }
 
   let getMyTasks = () => {
+    console.log(details.email)
     axios.get(`/api/myTasks/${details.email}`).then(resp => {
       let open = [], on = [], over = []
       for (let i = 0; i < resp.data.length; i++) {
@@ -58,13 +79,6 @@ const AuthContextProvider = props => {
   let verify = data => {
     axios.post("/api/verify", { token: data }).then(resp => {
       if (resp.data.email) {
-        let socket = io(url);
-
-        socket.on(`newChanges/${resp.data.email}`, (msg) => {
-          getMyTasks();
-          getPostedTasks();
-        })
-
         setDetails({ email: resp.data.email, name: resp.data.name, id: resp.data.id })
       }
     }).catch(err => { })

@@ -14,8 +14,21 @@ const Details = (props) => {
   let [comment, setComment] = useState("")
   let [msgs, setMsg] = useState({})
   let [to, setTo] = useState("")
-  let { details, init, url, setLoad, load } = useContext(AuthContext);
+  let { details, init, url, setLoad, load, isAuth } = useContext(AuthContext);
 
+  // const options = {
+  //   headers: { 'auth': isAuth }
+  // };
+
+  // let sendWithHeaders = () => {
+  //   if (comment.length != 0) {
+  //     axios.post(`/api/addComment/${dets.id}`, { from: details.email, msg: comment, to, }, options).then(resp => {
+  //       console.log(resp.data)
+  //       setComment("");
+  //       document.getElementById("comment").value = "";
+  //     }).catch(err => { console.log(err) })
+  //   }
+  // }
 
   let autoScroll = () => {
     const container = document.getElementById("chat");
@@ -42,7 +55,12 @@ const Details = (props) => {
   }
 
   useEffect(() => {
-    let socket = io(url);
+    let socket = io.connect(url);
+
+    socket.on(`comment/${props.match.params.id}`, (msg) => {
+      getComments();
+    })
+
     let token = localStorage.getItem("Token");
     if (token) {
       init();
@@ -55,10 +73,6 @@ const Details = (props) => {
           console.log(resp.data[0])
           setDets(resp.data[0])
           setLoad(false)
-
-          socket.on(`comment/${props.match.params.id}`, (msg) => {
-            getComments();
-          })
         }
       }).catch(err => { })
     } else {

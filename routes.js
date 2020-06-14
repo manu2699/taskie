@@ -226,6 +226,15 @@ app.get("/getComments/:id", (req, res) => {
   })
 })
 
-
+function authMiddleware(req, res, next) {
+  const authHeader = req.headers['auth']
+  console.log(authHeader)
+  if (authHeader) {
+    next()
+    return
+  } else {
+    res.sendStatus(404)
+  }
+}
 
 module.exports = app;

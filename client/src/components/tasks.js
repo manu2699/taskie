@@ -5,7 +5,7 @@ import { ClipLoader } from "react-spinners";
 import axios from "axios";
 
 const Tasks = (props) => {
-  let { posted, myTasks, from, getMyTasks, getPostedTasks, load, setLoad } = useContext(AuthContext);
+  let { posted, myTasks, from, getMyTasks, init, load, setLoad } = useContext(AuthContext);
   let [data, setData] = useState({ "open": [], "on": [], "over": [] })
   let [toChange, setToChange] = useState(0)
   let [changeStatus, setchangeStatus] = useState("")
@@ -19,6 +19,7 @@ const Tasks = (props) => {
   }
 
   useEffect(() => {
+    init();
     setLayout();
   }, [])
 
@@ -83,6 +84,7 @@ const Tasks = (props) => {
             })}
           </center>
         </div>
+
         <div className="col" id="on" onDrop={(event) => { drop(event) }} onDragOver={(event) => { allowDrop(event) }}>
           <span className="underline">Tasks on Progress</span>
           <center >
@@ -97,6 +99,7 @@ const Tasks = (props) => {
             })}
           </center>
         </div>
+
         <div className="col" id="over" onDrop={(event) => { drop(event) }} onDragOver={(event) => { allowDrop(event) }}>
           <span className="underline">Finished Tasks</span>
           <center>

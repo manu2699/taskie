@@ -25,18 +25,18 @@ const Dashboard = (props) => {
   }, [])
 
   useEffect(() => {
-    if (!from && details.email) {
+    if (!from && details.email != "") {
       getPostedTasks()
-    } else if (from && details.email) {
+    } else if (from && details.email != "") {
       getMyTasks();
     }
   }, [from])
 
   useEffect(() => {
     console.log(details)
-    if (!from) {
+    if (!from && details.email != "") {
       getPostedTasks()
-    } else {
+    } else if (from && details.email != "") {
       getMyTasks();
     }
   }, [details])
