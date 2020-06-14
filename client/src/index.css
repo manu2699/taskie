@@ -1,9 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Sriracha&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Balsamiq+Sans&family=Sriracha&display=swap");
 
 body {
 	margin: 0;
-	/* font-family: "Sriracha", cursive; */
 	font-family: "Balsamiq Sans", cursive;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
