@@ -50,11 +50,13 @@ body {
 	flex-wrap: wrap;
 }
 .col {
-	height: 80vh;
+	height: 90vh;
 	width: 25%;
-	margin: 15px;
+	margin: 5px;
 	border-radius: 10px;
-	border: 2px solid black;
+	padding: 10px;
+	overflow: auto;
+	/* border: 2px solid black; */
 }
 
 .float {
@@ -246,6 +248,17 @@ h4 > span {
 	cursor: pointer;
 }
 
+#open {
+	background-color: #a6ff001f;
+}
+#on {
+	background-color: #00f7ff1f;
+}
+
+#over {
+	background-color: #00ff6a1f;
+}
+
 #open > center > #task {
 	color: white;
 }
@@ -266,7 +279,7 @@ h4 > span {
 	color: #000;
 }
 
-.chat {
+#chat {
 	height: 30vh;
 	overflow: auto;
 }
@@ -284,7 +297,7 @@ h4 > span {
 	font-size: 1.1em;
 	border-style: solid none none solid;
 	border-color: #fff;
-	border-width: 7px;
+	border-width: 2px;
 }
 
 #sentMsg {
@@ -300,7 +313,7 @@ h4 > span {
 	height: fit-content;
 	border-style: none solid solid none;
 	border-color: #fff;
-	border-width: 7px;
+	border-width: 3px;
 }
 
 @media (max-width: 840px) {

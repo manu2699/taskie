@@ -125,7 +125,7 @@ const Details = (props) => {
                 <h4> <span>Posted At - </span>{date}</h4>
                 <br />
                 <h4>Comments</h4>
-                <div className="chat">
+                <div id="chat">
                   {msgs != undefined && msgs.length > 0 ? (
                     <div>
                       {msgs.map(msg => {

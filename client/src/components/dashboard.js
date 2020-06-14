@@ -96,13 +96,13 @@ const Dashboard = (props) => {
       <center>
         {from ?
           (<div>
-            <span className="underline" onClick={() => setFrom(false)}>Tasks that you assigned..</span>
-            <span className="heading" >Tasks assigned to me</span>
+            <span className="underline" onClick={() => setFrom(false)}>Assigned Tasks</span>
+            <span className="heading" >My Tasks</span>
           </div>)
           :
           (<div>
-            <span className="heading">Tasks that you assigned..</span>
-            <span className="underline" onClick={() => setFrom(true)}>Tasks assigned to me</span>
+            <span className="heading">Assigned Tasks</span>
+            <span className="underline" onClick={() => setFrom(true)}>My Tasks</span>
           </div>)
         }
       </center>
