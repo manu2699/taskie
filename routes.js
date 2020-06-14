@@ -106,4 +106,28 @@ app.get("/changeStatus/:id/:status", (req, res) => {
   })
 })
 
+app.get("/details/:id", (req, res) => {
+  db.query(`Select * from tasks where id = ${req.params.id}`, (err, result) => {
+    if (err)
+      return res.send(err)
+    return res.send(result)
+  })
+})
+
+app.get("/deleteTask/:id", (req, res) => {
+  db.query(`Delete from tasks where id = ${req.params.id}`, (err, result) => {
+    if (err)
+      return res.send(err)
+    return res.send(result)
+  })
+})
+
+app.post("/updateComment/:id", (req, res) => {
+  db.query(`Update tasks set comment = "${req.body.comment}" where id = ${req.params.id}`, (err, result) => {
+    if (err)
+      return res.send(err)
+    return res.send(result)
+  })
+})
+
 module.exports = app;

@@ -14,7 +14,7 @@ const Dashboard = (props) => {
   let [taskComment, setTaskComment] = useState("No Comments Yet..");
   let [ok, setOk] = useState(false);
   let [err, setErr] = useState("");
-  // let [posted, setPosted] = useState({ "open": [], "on": [], "over": [] })
+
   useEffect(() => {
     let token = localStorage.getItem("Token");
     if (token) {
@@ -107,7 +107,7 @@ const Dashboard = (props) => {
         }
       </center>
 
-      <Tasks />
+      <Tasks {...props} />
       <span className="float" onClick={() => { addTask() }}>
         <GrAdd className="fl-ico" />
       </span>

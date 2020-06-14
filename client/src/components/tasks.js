@@ -26,8 +26,8 @@ const Tasks = (props) => {
     setLayout();
   }, [from, myTasks])
 
-  let moreInfo = () => {
-
+  let moreInfo = (id) => {
+    props.history.push(`/task/${id}`)
   }
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const Tasks = (props) => {
                 <div className="blueCard" id="task" draggable="true" onDragStart={(event) => { drag(event) }} >
                   <h3 id={items.id}>{items.name}</h3>
                   <h4>{items.taskdesc}</h4>
-                  <span className="abs" onClick={() => moreInfo()}><GoLinkExternal className="icon" /></span>
+                  <span className="abs" onClick={() => moreInfo(items.id)}><GoLinkExternal className="icon" /></span>
                 </div>
               )
             })}
@@ -90,7 +90,7 @@ const Tasks = (props) => {
                 <div className="blueCard" id="task" draggable="true" onDragStart={(event) => { drag(event) }}>
                   <h3 id={items.id}>{items.name}</h3>
                   <h4>{items.taskdesc}</h4>
-                  <span className="abs" onClick={() => moreInfo()}><GoLinkExternal className="icon" /></span>
+                  <span className="abs" onClick={() => moreInfo(items.id)}><GoLinkExternal className="icon" /></span>
                 </div>
               )
             })}
@@ -104,7 +104,7 @@ const Tasks = (props) => {
                 <div className="blueCard" id="task" draggable="true" onDragStart={(event) => { drag(event) }} >
                   <h3 id={items.id}>{items.name}</h3>
                   <h4>{items.taskdesc}</h4>
-                  <span className="abs" onClick={() => moreInfo()}><GoLinkExternal className="icon" /></span>
+                  <span className="abs" onClick={() => moreInfo(items.id)}><GoLinkExternal className="icon" /></span>
                 </div>
               )
             })}

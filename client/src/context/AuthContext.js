@@ -16,6 +16,8 @@ const AuthContextProvider = props => {
 
   useEffect(() => { setLoad(false) }, [myTasks])
 
+  useEffect(() => { console.log(details) }, [details])
+
   let getPostedTasks = () => {
     axios.get(`/api/toTasks/${details.email}`).then(resp => {
       let open = [], on = [], over = []

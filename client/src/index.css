@@ -109,12 +109,12 @@ body {
 	height: max-content;
 	color: #769091;
 	text-align: left;
-	/* width: 35vw; */
 	transition: 250ms ease-out;
 }
 
 #loginForm,
-#Form {
+#Form,
+#details {
 	width: 60%;
 }
 
@@ -287,7 +287,8 @@ h4 > span {
 		width: 70%;
 	}
 	#loginForm,
-	#Form {
+	#Form,
+	#details {
 		width: 80%;
 	}
 }
