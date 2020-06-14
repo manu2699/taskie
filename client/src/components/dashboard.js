@@ -1,22 +1,20 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { AuthContext } from "../context/AuthContext";
 import { GrUserSettings, GrAdd, GrClose } from "react-icons/gr";
-import { FiUserPlus, FiUserCheck } from "react-icons/fi";
+import { FiUserPlus, FiUserCheck, FiLogOut } from "react-icons/fi";
 import { IoMdAdd } from "react-icons/io";
-import { Redirect } from "react-router-dom";
 import Tasks from "./tasks";
 import axios from "axios";
 
 const Dashboard = (props) => {
-  let { details, init } = useContext(AuthContext);
+  let { details, init, setPosted, logOut, setMyTasks, from, setFrom } = useContext(AuthContext);
   let [taskName, setName] = useState("");
   let [assignTo, setAssignTo] = useState("");
   let [taskDesc, setTaskDesc] = useState("");
   let [taskComment, setTaskComment] = useState("No Comments Yet..");
   let [ok, setOk] = useState(false);
   let [err, setErr] = useState("");
-  let [from, setFrom] = useState(false);
-
+  // let [posted, setPosted] = useState({ "open": [], "on": [], "over": [] })
   useEffect(() => {
     let token = localStorage.getItem("Token");
     if (token) {
@@ -26,16 +24,54 @@ const Dashboard = (props) => {
     }
   }, [])
 
+  let getPostedTasks = () => {
+    axios.get(`/api/toTasks/${details.email}`).then(resp => {
+      let open = [], on = [], over = []
+      for (let i = 0; i < resp.data.length; i++) {
+        if (resp.data[i].status == "open") {
+          open.push(resp.data[i])
+        } else if (resp.data[i].status == "on") {
+          on.push(resp.data[i])
+        } else if (resp.data[i].status == "over") {
+          over.push(resp.data[i])
+        }
+      }
+      setPosted({ open, on, over })
+      console.log(open, on, over)
+    })
+  }
+
+  let getMyTasks = () => {
+    axios.get(`/api/myTasks/${details.email}`).then(resp => {
+      let open = [], on = [], over = []
+      for (let i = 0; i < resp.data.length; i++) {
+        if (resp.data[i].status == "open") {
+          open.push(resp.data[i])
+        } else if (resp.data[i].status == "on") {
+          on.push(resp.data[i])
+        } else if (resp.data[i].status == "over") {
+          over.push(resp.data[i])
+        }
+      }
+      setMyTasks({ open, on, over })
+    })
+  }
+
   useEffect(() => {
-    if (!from) {
-      axios.get(`/api/toTasks/${details.email}`).then(resp => {
-        console.log(resp.data)
-      })
+    if (!from && details.email) {
+      getPostedTasks()
+    } else if (from && details.email) {
+      getMyTasks();
     }
   }, [from])
 
   useEffect(() => {
     console.log(details)
+    if (!from) {
+      getPostedTasks()
+    } else {
+      getMyTasks();
+    }
   }, [details])
 
   let addTask = () => {
@@ -44,7 +80,12 @@ const Dashboard = (props) => {
   }
 
   let UserProfile = () => {
+    document.getElementById("Profile-Overlay").style.display = "block";
+  }
 
+  let logout = () => {
+    logOut();
+    props.history.push("/")
   }
 
   let postTask = () => {
@@ -53,8 +94,14 @@ const Dashboard = (props) => {
       taskName, assignTo,
       fromEmail: details.email,
     }).then(resp => {
-      console.log(resp.data)
-    }).catch(err => { })
+      if (resp.data.code) {
+        console.log("Some error occured :(")
+        setErr("Some error occured :(")
+      } else if (resp.data.insertId) {
+        setErr("")
+        document.getElementById("AddTask-Overlay").style.display = "none";
+      }
+    }).catch(err => { setErr("Some error occured :(") })
   }
 
   let verifyAssignee = () => {
@@ -134,6 +181,26 @@ const Dashboard = (props) => {
                   <div><h3>Add Task </h3><IoMdAdd size="25px" /></div>
                 </button>
                 ) : (<button onClick={() => verifyAssignee()}><div> <h3>Verify Task Assignie ?</h3><FiUserCheck size="25px" /></div></button>)}
+            </center>
+          </div>
+        </div>
+      </div>
+
+      <div id="Profile-Overlay">
+        <div className="Content">
+          <div className="blueCard" id="Form">
+            <div className="fl-row">
+              <h3>Your Profile</h3>
+              <div className="fl" style={{ "cursor": "pointer" }} onClick={() => { document.getElementById("Profile-Overlay").style.display = "none"; }}>
+                <center>
+                  <GrClose className="fl-ico" />
+                </center>
+              </div>
+            </div>
+            <center>
+              <h4>Name : {details.name} </h4>
+              <h4>eMail : {details.email} </h4>
+              <button onClick={() => logout()}><div> <h3>LogOut</h3><FiLogOut size="25px" /></div></button>
             </center>
           </div>
         </div>

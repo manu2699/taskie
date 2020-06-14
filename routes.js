@@ -90,4 +90,12 @@ app.get("/toTasks/:email", (req, res) => {
   })
 })
 
+app.get("/myTasks/:email", (req, res) => {
+  db.query(`Select * from tasks where taskto = "${req.params.email}" order by dateAssigned desc`, (err, result) => {
+    if (err)
+      return res.send(err)
+    return res.send(result)
+  })
+})
+
 module.exports = app;

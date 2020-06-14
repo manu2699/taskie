@@ -51,10 +51,10 @@ body {
 }
 .col {
 	height: 80vh;
-	width: 23%;
-	margin: 20px;
+	width: 25%;
+	margin: 15px;
 	border-radius: 10px;
-	border: 5px solid black;
+	border: 2px solid black;
 }
 #open {
 }
@@ -79,7 +79,8 @@ body {
 	right: 110px;
 }
 
-#AddTask-Overlay {
+#AddTask-Overlay,
+#Profile-Overlay {
 	position: fixed;
 	display: none;
 	width: 100%;
@@ -91,6 +92,7 @@ body {
 	background-color: rgba(1, 53, 16, 0.808);
 	z-index: 2;
 	cursor: pointer;
+	transition: 250ms ease-out;
 }
 .Content {
 	display: flex;
@@ -211,6 +213,54 @@ input[type="text"] {
 }
 h4 > span {
 	color: #688485;
+}
+
+#task {
+	width: 80%;
+	border-radius: 10px;
+	color: #000;
+	padding: 5px;
+	margin: 5px;
+	text-align: center;
+	position: relative;
+
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.abs {
+	position: absolute;
+	right: 5px;
+	bottom: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+
+#open > center > #task {
+	color: white;
+}
+
+#finished > center > #task {
+	background-color: #1aff1a4f;
+	color: #000;
+}
+
+#on-progress > center > #task {
+	background-color: #00f7ff44;
+	color: #000;
+}
+#on-progress > center > #task > h4,
+#on-progress > center > #task > span > .icon,
+#finished > center > #task > h4,
+#finished > center > #task > span > .icon {
+	color: #000;
 }
 
 @media (max-width: 840px) {

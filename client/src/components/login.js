@@ -18,6 +18,14 @@ const Login = (props) => {
   let [samepass, setsamePass] = useState(false);
   let [ok, setOk] = useState(false);
 
+  useEffect(() => {
+    let token = localStorage.getItem("Token");
+    if (token) {
+      props.history.push("/")
+    }
+  }, [])
+
+
   let checkEmail = () => {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       setvEmail(true)
