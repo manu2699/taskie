@@ -116,13 +116,19 @@ app.get("/verifyAssignee/:email", (req, res) => {
 })
 
 app.post("/postTask", (req, res) => {
-  let { taskName, fromEmail, assignTo, taskComment, taskDesc } = req.body;
+  let { taskName, fromEmail, assignTo, taskDesc } = req.body;
   db.query(`Insert into tasks (name, taskfrom, taskto, taskdesc, dateAssigned, status)
     values("${taskName}", "${fromEmail}", "${assignTo}", "${taskDesc}", "${DateString}", "open");`,
     (err, result) => {
       if (err)
         return res.send(err)
-      // db.query(`Insert into comments (taskid, cmntby, cmnt) values ("${}", "${}","${}")`)
+
+      const io = req.app.get("io");
+      let listenObj = `newChanges/${fromEmail}`;
+      io.emit(listenObj, true);
+
+      listenObj = `newChanges/${assignTo}`;
+      io.emit(listenObj, true);
       return res.send(result)
     })
 })
@@ -147,7 +153,18 @@ app.get("/changeStatus/:id/:status", (req, res) => {
   db.query(`Update tasks set status = "${req.params.status}" where id = ${req.params.id}`, (err, result) => {
     if (err)
       return res.send(err)
-    return res.send(result)
+    db.query(`Select * from tasks where id = ${req.params.id}`, (er, rest) => {
+      if (er)
+        return res.send(err)
+      // console.log(rest[0].taskfrom, rest[0].taskto)
+      const io = req.app.get("io");
+      let listenObj = `newChanges/${rest[0].taskfrom}`;
+      io.emit(listenObj, true);
+
+      listenObj = `newChanges/${rest[0].taskto}`;
+      io.emit(listenObj, true);
+      return res.send(result)
+    })
   })
 })
 
@@ -159,20 +176,56 @@ app.get("/details/:id", (req, res) => {
   })
 })
 
-app.get("/deleteTask/:id", (req, res) => {
+app.post("/deleteTask/:id", (req, res) => {
   db.query(`Delete from tasks where id = ${req.params.id}`, (err, result) => {
+    if (err)
+      return res.send(err)
+
+    const io = req.app.get("io");
+    let listenObj = `newChanges/${req.body.user1}`;
+    io.emit(listenObj, true);
+
+    listenObj = `newChanges/${req.body.user2}`;
+    io.emit(listenObj, true);
+
+    return res.send(result)
+  })
+})
+
+app.post("/addComment/:id", (req, res) => {
+  db.query(`Insert into comments (taskid, cmntby, cmnto, cmnt) values (${req.params.id}, "${req.body.from}", "${req.body.to}","${req.body.msg}")`, (err, result) => {
+    if (err)
+      return res.send(err)
+    var mailOptions = {
+      from: "mr.taskie@gmail.com",
+      to: [req.body.from, req.body.to],
+      subject: `New Comment on Task ${req.params.id}`,
+      text: `${req.body.from} have posted a new comment... Click here to view https://taskiee.herokuapp.com/task/${req.params.id}!`
+    };
+
+    const io = req.app.get("io");
+    let listenObj = `comment/${req.params.id}`;
+    io.emit(listenObj, true);
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(" err ", error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
+    return res.send(result)
+  })
+})
+
+app.get("/getComments/:id", (req, res) => {
+  db.query(`Select * from comments where taskid = ${req.params.id}`, (err, result) => {
     if (err)
       return res.send(err)
     return res.send(result)
   })
 })
 
-app.post("/updateComment/:id", (req, res) => {
-  db.query(`Update tasks set comment = "${req.body.comment}" where id = ${req.params.id}`, (err, result) => {
-    if (err)
-      return res.send(err)
-    return res.send(result)
-  })
-})
+
 
 module.exports = app;

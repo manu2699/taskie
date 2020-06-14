@@ -1,10 +1,15 @@
 import React, { createContext, useState, useEffect } from "react";
 
 import axios from "axios";
+import io from "socket.io-client";
 
 export const AuthContext = createContext();
 
 const AuthContextProvider = props => {
+
+  // let [url, setURL] = useState("http://localhost:5000");
+  let [url, setURL] = useState("https://taskiee.herokuapp.com");
+
   let tok = localStorage.getItem("Token");
 
   let [isAuth, setIsAuth] = useState(tok);
@@ -53,6 +58,13 @@ const AuthContextProvider = props => {
   let verify = data => {
     axios.post("/api/verify", { token: data }).then(resp => {
       if (resp.data.email) {
+        let socket = io(url);
+
+        socket.on(`newChanges/${resp.data.email}`, (msg) => {
+          getMyTasks();
+          getPostedTasks();
+        })
+
         setDetails({ email: resp.data.email, name: resp.data.name, id: resp.data.id })
       }
     }).catch(err => { })
@@ -77,7 +89,7 @@ const AuthContextProvider = props => {
   return (
     <AuthContext.Provider
       value={{
-        isAuth, details, posted, myTasks, from, load,
+        isAuth, details, posted, myTasks, from, load, url,
         afterAuth, logOut, init, setPosted, setMyTasks, setFrom, getMyTasks, getPostedTasks, setLoad
       }}>
       {props.children}

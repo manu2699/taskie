@@ -52,7 +52,7 @@ const Dashboard = (props) => {
 
   let logout = () => {
     logOut();
-    props.history.push("/")
+    props.history.push("/login")
   }
 
   let postTask = () => {
@@ -134,8 +134,8 @@ const Dashboard = (props) => {
             <input type="text" onChange={e => setTaskDesc(e.target.value)} required />
             <h4>Task To ?  <span> - Specify the email id of person whom you want to assign the task</span></h4>
             <input type="text" onChange={e => setAssignTo(e.target.value)} required />
-            <h4>Task Comment<span> - Optional</span></h4>
-            <input type="text" onChange={e => setTaskComment(e.target.value)} />
+            {/* <h4>Task Comment<span> - Optional</span></h4>
+            <input type="text" onChange={e => setTaskComment(e.target.value)} /> */}
             <br />
             <br />
             <center>

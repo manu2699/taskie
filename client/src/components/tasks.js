@@ -72,6 +72,7 @@ const Tasks = (props) => {
           <span className="underline">Open Tasks</span>
           <center>
             {data.open.map(items => {
+              console.log(items)
               return (
                 <div className="blueCard" id="task" draggable="true" onDragStart={(event) => { drag(event) }} >
                   <h3 id={items.id}>{items.name}</h3>

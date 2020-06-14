@@ -19,6 +19,9 @@ if (process.env.NODE_ENV === "production") {
 const port = process.env.PORT || 5000;
 const serveHost = process.env.YOUR_HOST || "0.0.0.0";
 
-app.listen(port, serveHost, () => {
+var server = app.listen(port, serveHost, () => {
   console.log(`Server running on ${port}`);
 });
+
+var io = require("socket.io")(server);
+app.set("io", io);
