@@ -247,19 +247,19 @@ h4 > span {
 	color: white;
 }
 
-#finished > center > #task {
+#over > center > #task {
 	background-color: #1aff1a4f;
 	color: #000;
 }
 
-#on-progress > center > #task {
+#on > center > #task {
 	background-color: #00f7ff44;
 	color: #000;
 }
-#on-progress > center > #task > h4,
-#on-progress > center > #task > span > .icon,
-#finished > center > #task > h4,
-#finished > center > #task > span > .icon {
+#on > center > #task > h4,
+#on > center > #task > span > .icon,
+#over > center > #task > h4,
+#over > center > #task > span > .icon {
 	color: #000;
 }
 

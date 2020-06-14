@@ -98,4 +98,12 @@ app.get("/myTasks/:email", (req, res) => {
   })
 })
 
+app.get("/changeStatus/:id/:status", (req, res) => {
+  db.query(`Update tasks set status = "${req.params.status}" where id = ${req.params.id}`, (err, result) => {
+    if (err)
+      return res.send(err)
+    return res.send(result)
+  })
+})
+
 module.exports = app;

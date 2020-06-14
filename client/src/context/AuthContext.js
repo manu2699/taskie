@@ -12,19 +12,43 @@ const AuthContextProvider = props => {
   let [posted, setPosted] = useState({ "open": [], "on": [], "over": [] })
   let [myTasks, setMyTasks] = useState({ "open": [], "on": [], "over": [] })
   let [from, setFrom] = useState(false);
+  let [load, setLoad] = useState(false);
 
-  useEffect(() => { console.log(details) }, [details])
+  useEffect(() => { setLoad(false) }, [myTasks])
 
-  // useEffect(() => {
-  //   console.log(posted)
-  // }, [posted])
+  let getPostedTasks = () => {
+    axios.get(`/api/toTasks/${details.email}`).then(resp => {
+      let open = [], on = [], over = []
+      for (let i = 0; i < resp.data.length; i++) {
+        if (resp.data[i].status == "open") {
+          open.push(resp.data[i])
+        } else if (resp.data[i].status == "on") {
+          on.push(resp.data[i])
+        } else if (resp.data[i].status == "over") {
+          over.push(resp.data[i])
+        }
+      }
+      setPosted({ open, on, over })
+    })
+  }
 
+  let getMyTasks = () => {
+    axios.get(`/api/myTasks/${details.email}`).then(resp => {
+      let open = [], on = [], over = []
+      for (let i = 0; i < resp.data.length; i++) {
+        if (resp.data[i].status == "open") {
+          open.push(resp.data[i])
+        } else if (resp.data[i].status == "on") {
+          on.push(resp.data[i])
+        } else if (resp.data[i].status == "over") {
+          over.push(resp.data[i])
+        }
+      }
+      setMyTasks({ open, on, over })
+    })
+  }
 
-  // useEffect(() => {
-  //   console.log(myTasks)
-  // }, [myTasks])
-
-  const verify = data => {
+  let verify = data => {
     axios.post("/api/verify", { token: data }).then(resp => {
       if (resp.data.email) {
         setDetails({ email: resp.data.email, name: resp.data.name, id: resp.data.id })
@@ -32,27 +56,27 @@ const AuthContextProvider = props => {
     }).catch(err => { })
   }
 
-  const afterAuth = data => {
+  let afterAuth = data => {
     setIsAuth(data);
     localStorage.setItem("Token", data);
     verify(data)
   };
 
-  const logOut = () => {
+  let logOut = () => {
     localStorage.removeItem("Token");
     setIsAuth(null);
     setDetails({ uname: "", uemail: "" });
   };
 
-  const init = () => {
+  let init = () => {
     verify(tok)
   };
 
   return (
     <AuthContext.Provider
       value={{
-        isAuth, details, posted, myTasks, from,
-        afterAuth, logOut, init, setPosted, setMyTasks, setFrom
+        isAuth, details, posted, myTasks, from, load,
+        afterAuth, logOut, init, setPosted, setMyTasks, setFrom, getMyTasks, getPostedTasks, setLoad
       }}>
       {props.children}
     </AuthContext.Provider>

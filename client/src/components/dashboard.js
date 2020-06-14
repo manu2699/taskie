@@ -7,7 +7,7 @@ import Tasks from "./tasks";
 import axios from "axios";
 
 const Dashboard = (props) => {
-  let { details, init, setPosted, logOut, setMyTasks, from, setFrom } = useContext(AuthContext);
+  let { details, init, logOut, from, setFrom, getMyTasks, getPostedTasks } = useContext(AuthContext);
   let [taskName, setName] = useState("");
   let [assignTo, setAssignTo] = useState("");
   let [taskDesc, setTaskDesc] = useState("");
@@ -23,39 +23,6 @@ const Dashboard = (props) => {
       props.history.push("/login")
     }
   }, [])
-
-  let getPostedTasks = () => {
-    axios.get(`/api/toTasks/${details.email}`).then(resp => {
-      let open = [], on = [], over = []
-      for (let i = 0; i < resp.data.length; i++) {
-        if (resp.data[i].status == "open") {
-          open.push(resp.data[i])
-        } else if (resp.data[i].status == "on") {
-          on.push(resp.data[i])
-        } else if (resp.data[i].status == "over") {
-          over.push(resp.data[i])
-        }
-      }
-      setPosted({ open, on, over })
-      console.log(open, on, over)
-    })
-  }
-
-  let getMyTasks = () => {
-    axios.get(`/api/myTasks/${details.email}`).then(resp => {
-      let open = [], on = [], over = []
-      for (let i = 0; i < resp.data.length; i++) {
-        if (resp.data[i].status == "open") {
-          open.push(resp.data[i])
-        } else if (resp.data[i].status == "on") {
-          on.push(resp.data[i])
-        } else if (resp.data[i].status == "over") {
-          over.push(resp.data[i])
-        }
-      }
-      setMyTasks({ open, on, over })
-    })
-  }
 
   useEffect(() => {
     if (!from && details.email) {
