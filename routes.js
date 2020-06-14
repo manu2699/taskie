@@ -4,6 +4,7 @@ const app = express.Router();
 const mysql = require('mysql');
 const jwt = require("jsonwebtoken");
 const DateString = require("./date");
+
 const SimpleCrypto = require("simple-crypto-js").default;
 let simpleCrypto = new SimpleCrypto(process.env.KEY)
 const secret = process.env.SECRET;
@@ -14,6 +15,49 @@ let db = mysql.createPool({
   password: process.env.PASSWORD,
   database: process.env.DB
 });
+
+const nodemailer = require("nodemailer");
+
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    type: 'OAuth2',
+    user: process.env.MAILID,
+    refreshToken: process.env.REFRESH_TOKEN,
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+  }
+});
+
+transporter.verify((error, success) => {
+  if (error) return console.log(error)
+  transporter.on('token', token => {
+    console.log('A New Acess token was generated')
+    console.log('User : %s', token.user)
+    console.log('Acess Token : %s', token.accessToken)
+    console.log('Expires : %s', new Date(token.expires))
+  })
+})
+
+app.get("/check/:email", (req, res) => {
+  var mailOptions = {
+    from: "mr.taskie@gmail.com",
+    to: req.params.email,
+    subject: "Check Mail",
+    text: `Hey buddy..`
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      res.send(error)
+      console.log(" err ", error);
+    } else {
+      res.send(info.response)
+      console.log("Email sent: " + info.response);
+    }
+  });
+})
 
 app.post("/query", (req, res) => {
   db.query(req.body.query, (err, result) => {
@@ -73,11 +117,12 @@ app.get("/verifyAssignee/:email", (req, res) => {
 
 app.post("/postTask", (req, res) => {
   let { taskName, fromEmail, assignTo, taskComment, taskDesc } = req.body;
-  db.query(`Insert into tasks (name, taskfrom, taskto, taskdesc, comment, dateAssigned, status)
-    values("${taskName}", "${fromEmail}", "${assignTo}", "${taskDesc}", "${taskComment}", "${DateString}", "open");`,
+  db.query(`Insert into tasks (name, taskfrom, taskto, taskdesc, dateAssigned, status)
+    values("${taskName}", "${fromEmail}", "${assignTo}", "${taskDesc}", "${DateString}", "open");`,
     (err, result) => {
       if (err)
         return res.send(err)
+      // db.query(`Insert into comments (taskid, cmntby, cmnt) values ("${}", "${}","${}")`)
       return res.send(result)
     })
 })
